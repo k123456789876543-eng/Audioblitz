@@ -502,6 +502,36 @@ if (kDebugMode) {
 
 ---
 
+
+### Responsive Layout (Desktop + Mobile)
+
+`src/AuraBoost.jsx` now includes a responsive shell:
+- **Desktop/Web (>= 921px):** split layout with a web info panel + app device frame
+- **Mobile/Tablet (< 921px):** original focused single-column mobile experience
+
+This keeps the interaction model mobile-first while making large screens visually balanced.
+
+### Expo Mobile Testing Wrapper
+
+An Expo wrapper is available in `expo-mobile/` so you can test the web build on your phone quickly:
+
+```bash
+# 1) Run the React app first (Vite)
+npm run dev -- --host
+
+# 2) In another terminal
+cd expo-mobile
+npm install
+
+# 3) Update WEB_APP_URL in expo-mobile/App.js
+#    Use your computer's LAN IP + Vite port (example: http://192.168.1.100:5173)
+
+# 4) Start Expo
+npm run start
+```
+
+Then open Expo Go on your phone and scan the QR.
+
 ## Running on iOS
 
 ```bash
@@ -586,24 +616,53 @@ defaultConfig {
 
 ## Running as Web App (React Prototype)
 
-The React prototype (`AuraBoost.jsx`) can be run in any environment that supports React and JSX:
+This repository is now Vite-ready for web deployment (including Vercel):
 
 ```bash
+npm install
+npm run dev
+
+# Production build
+npm run build
+```
+
+If you deploy to Vercel, keep the project root as this repository root and use:
+- Build command: `npm run build`
+- Output directory: `dist`
+
+If you still see `404: NOT_FOUND`, it usually means Vercel did not find a built app in the configured output directory (or the wrong root directory was selected).
+
+```bash
+# Legacy manual setup (still works)
 # With Vite
 npm create vite@latest auraboost-web -- --template react
 cd auraboost-web
-# Replace src/App.jsx with AuraBoost.jsx content
+# Replace src/App.jsx with src/AuraBoost.jsx content
 npm install
 npm run dev
 
 # With Create React App
 npx create-react-app auraboost-web
 cd auraboost-web
-# Replace src/App.js with AuraBoost.jsx content
+# Replace src/App.js with src/AuraBoost.jsx content
 npm start
 ```
 
 > **Note:** The Web Audio API requires a user gesture to initialize the `AudioContext`. The play button tap serves as this gesture. For best results, use Google Chrome or Safari. Firefox has minor Web Audio quirks.
+
+
+### If Vercel shows a blank white page
+
+1. Open DevTools Console and check for the first red error.
+2. In Vercel Project Settings verify:
+   - Root directory: repository root
+   - Build command: `npm run build`
+   - Output directory: `dist`
+3. Redeploy with **Clear build cache** enabled.
+4. Hard-refresh the deployed URL (`Ctrl/Cmd + Shift + R`).
+
+A project `vercel.json` is included to lock these settings and add SPA rewrites.
+
 
 > **Headphones required.** Binaural beats have no effect through speakers — both channels merge into the same air before reaching your ears, cancelling the beat frequency. The app warns users of this.
 
