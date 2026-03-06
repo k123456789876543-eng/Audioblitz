@@ -616,9 +616,24 @@ defaultConfig {
 
 ## Running as Web App (React Prototype)
 
-The React prototype (`AuraBoost.jsx`) can be run in any environment that supports React and JSX:
+This repository is now Vite-ready for web deployment (including Vercel):
 
 ```bash
+npm install
+npm run dev
+
+# Production build
+npm run build
+```
+
+If you deploy to Vercel, keep the project root as this repository root and use:
+- Build command: `npm run build`
+- Output directory: `dist`
+
+If you still see `404: NOT_FOUND`, it usually means Vercel did not find a built app in the configured output directory (or the wrong root directory was selected).
+
+```bash
+# Legacy manual setup (still works)
 # With Vite
 npm create vite@latest auraboost-web -- --template react
 cd auraboost-web
