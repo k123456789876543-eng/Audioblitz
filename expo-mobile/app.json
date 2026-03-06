@@ -1,0 +1,24 @@
+{
+  "expo": {
+    "name": "AuraBoost Mobile Preview",
+    "slug": "auraboost-mobile-preview",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#05050f"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#05050f"
+      }
+    }
+  }
+}

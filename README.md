@@ -502,6 +502,36 @@ if (kDebugMode) {
 
 ---
 
+
+### Responsive Layout (Desktop + Mobile)
+
+`AuraBoost.jsx` now includes a responsive shell:
+- **Desktop/Web (>= 921px):** split layout with a web info panel + app device frame
+- **Mobile/Tablet (< 921px):** original focused single-column mobile experience
+
+This keeps the interaction model mobile-first while making large screens visually balanced.
+
+### Expo Mobile Testing Wrapper
+
+An Expo wrapper is available in `expo-mobile/` so you can test the web build on your phone quickly:
+
+```bash
+# 1) Run the React app first (Vite)
+npm run dev -- --host
+
+# 2) In another terminal
+cd expo-mobile
+npm install
+
+# 3) Update WEB_APP_URL in expo-mobile/App.js
+#    Use your computer's LAN IP + Vite port (example: http://192.168.1.100:5173)
+
+# 4) Start Expo
+npm run start
+```
+
+Then open Expo Go on your phone and scan the QR.
+
 ## Running on iOS
 
 ```bash
@@ -586,9 +616,24 @@ defaultConfig {
 
 ## Running as Web App (React Prototype)
 
-The React prototype (`AuraBoost.jsx`) can be run in any environment that supports React and JSX:
+This repository is now Vite-ready for web deployment (including Vercel):
 
 ```bash
+npm install
+npm run dev
+
+# Production build
+npm run build
+```
+
+If you deploy to Vercel, keep the project root as this repository root and use:
+- Build command: `npm run build`
+- Output directory: `dist`
+
+If you still see `404: NOT_FOUND`, it usually means Vercel did not find a built app in the configured output directory (or the wrong root directory was selected).
+
+```bash
+# Legacy manual setup (still works)
 # With Vite
 npm create vite@latest auraboost-web -- --template react
 cd auraboost-web

@@ -735,7 +735,7 @@ export default function AuraBoost(){
   useEffect(()=>()=>engine.stopAll(),[]);
 
   return(
-    <div style={{fontFamily:"'DM Sans',system-ui,sans-serif",background:"#05050f",color:"#fff",height:"100vh",display:"flex",flexDirection:"column",overflow:"hidden",position:"relative",maxWidth:430,margin:"0 auto"}}>
+    <div style={{fontFamily:"'DM Sans',system-ui,sans-serif",background:"radial-gradient(circle at top,#101028 0%,#05050f 52%,#020208 100%)",color:"#fff",height:"100vh",display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",padding:"clamp(8px,2vw,24px)"}}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700;9..40,800;9..40,900&family=Playfair+Display:wght@700;800;900&display=swap');
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -751,52 +751,77 @@ export default function AuraBoost(){
         @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
         @keyframes zoomIn{from{transform:scale(.65);opacity:0;}to{transform:scale(1);opacity:1;}}
         .screen{animation:fadeUp .32s ease;}
+        .app-shell{width:min(1120px,100%);height:min(92vh,840px);display:grid;grid-template-columns:minmax(280px,1fr) minmax(340px,430px);gap:clamp(14px,2vw,28px);align-items:stretch;}
+        .web-aside{display:flex;flex-direction:column;justify-content:center;padding:clamp(14px,2vw,28px);border-radius:28px;background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.015));border:1px solid rgba(255,255,255,.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 25px 60px rgba(0,0,0,.45);}
+        .app-device{background:#05050f;border-radius:28px;border:1px solid rgba(255,255,255,.08);box-shadow:0 30px 80px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.08);display:flex;flex-direction:column;overflow:hidden;position:relative;min-height:0;}
+        @media (max-width: 920px){
+          .app-shell{grid-template-columns:1fr;height:100%;max-width:430px;}
+          .web-aside{display:none;}
+          .app-device{border-radius:22px;height:100%;}
+        }
       `}</style>
 
-      {!onboarded?(
-        <div style={{flex:1,overflow:"hidden"}}>
-          <Onboarding onDone={()=>setOnboarded(true)}/>
-        </div>
-      ):(
-        <>
-          {/* Header pill */}
-          <div style={{textAlign:"center",padding:"12px 0 0",flexShrink:0}}>
-            <div style={{display:"inline-flex",alignItems:"center",gap:6,background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.07)",borderRadius:20,padding:"5px 14px"}}>
-              <div style={{width:6,height:6,borderRadius:"50%",background:"#e8a030",boxShadow:"0 0 8px #e8a030"}}/>
-              <span style={{fontSize:11,letterSpacing:3,color:"#ffffff55",textTransform:"uppercase"}}>AuraBoost</span>
-            </div>
+      <div className="app-shell">
+        <aside className="web-aside">
+          <div style={{fontSize:12,letterSpacing:3,textTransform:"uppercase",color:"#8d8d9b",marginBottom:16}}>Web Experience</div>
+          <h1 style={{fontSize:"clamp(30px,4vw,52px)",lineHeight:1.05,fontFamily:"'Playfair Display',Georgia,serif",marginBottom:14}}>Calm the fear.<br/>Own the moment.</h1>
+          <p style={{fontSize:"clamp(14px,1.25vw,18px)",lineHeight:1.65,color:"#a2a2b4",maxWidth:520}}>AuraBoost now adapts for large screens while preserving the focused mobile flow. Keep using headphones for the binaural effect, and use this side panel as a quick web dashboard.</p>
+          <div style={{display:"flex",gap:10,flexWrap:"wrap",marginTop:24}}>
+            {[
+              "Responsive web layout",
+              "Mobile-first controls",
+              "Expo preview ready"
+            ].map((tag)=><span key={tag} style={{fontSize:12,padding:"8px 12px",borderRadius:999,border:"1px solid rgba(232,160,48,.35)",background:"rgba(232,160,48,.08)",color:"#f0c77b"}}>{tag}</span>)}
           </div>
+        </aside>
 
-          {/* Content */}
-          <div style={{flex:1,overflowY:"auto",overflowX:"hidden",scrollbarWidth:"none",WebkitOverflowScrolling:"touch"}}>
-            <div className="screen" key={tab}>
-              {tab==="home"    &&<HomeScreen    onEmergency={()=>setEmergency(true)} addLog={addLog}/>}
-              {tab==="mixer"   &&<MixerScreen   savedMixes={savedMixes} setSavedMixes={setSavedMixes}/>}
-              {tab==="tracks"  &&<TracksScreen  />}
-              {tab==="journey" &&<JourneyScreen logs={logs} setLogs={setLogs}/>}
-              {tab==="profile" &&<ProfileScreen />}
+        <div className="app-device">
+          {!onboarded?(
+            <div style={{flex:1,overflow:"hidden"}}>
+              <Onboarding onDone={()=>setOnboarded(true)}/>
             </div>
-          </div>
+          ):(
+            <>
+              {/* Header pill */}
+              <div style={{textAlign:"center",padding:"12px 0 0",flexShrink:0}}>
+                <div style={{display:"inline-flex",alignItems:"center",gap:6,background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.07)",borderRadius:20,padding:"5px 14px"}}>
+                  <div style={{width:6,height:6,borderRadius:"50%",background:"#e8a030",boxShadow:"0 0 8px #e8a030"}}/>
+                  <span style={{fontSize:11,letterSpacing:3,color:"#ffffff55",textTransform:"uppercase"}}>AuraBoost</span>
+                </div>
+              </div>
 
-          {/* Bottom nav */}
-          <div style={{display:"flex",borderTop:"1px solid rgba(255,255,255,0.05)",background:"rgba(5,5,15,0.97)",backdropFilter:"blur(24px)",flexShrink:0,paddingBottom:"max(8px,env(safe-area-inset-bottom))"}}>
-            {TABS.map(t=>(
-              <Ripple key={t.id} onClick={()=>{engine.stopAll();setTab(t.id);}} style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:3,padding:"9px 4px 6px"}}>
-                <div style={{fontSize:19,filter:tab===t.id?"none":"grayscale(1) opacity(.3)",transition:"all .2s"}}>{t.icon}</div>
-                <div style={{fontSize:10,color:tab===t.id?"#e8a030":"#444",fontWeight:tab===t.id?800:500,transition:"all .2s",letterSpacing:.3}}>{t.label}</div>
-                {tab===t.id&&<div style={{width:18,height:2,background:"#e8a030",borderRadius:2}}/>}
-              </Ripple>
-            ))}
-          </div>
+              {/* Content */}
+              <div style={{flex:1,overflowY:"auto",overflowX:"hidden",scrollbarWidth:"none",WebkitOverflowScrolling:"touch"}}>
+                <div className="screen" key={tab}>
+                  {tab==="home"    &&<HomeScreen    onEmergency={()=>setEmergency(true)} addLog={addLog}/>}
+                  {tab==="mixer"   &&<MixerScreen   savedMixes={savedMixes} setSavedMixes={setSavedMixes}/>}
+                  {tab==="tracks"  &&<TracksScreen  />}
+                  {tab==="journey" &&<JourneyScreen logs={logs} setLogs={setLogs}/>}
+                  {tab==="profile" &&<ProfileScreen />}
+                </div>
+              </div>
 
-          {/* Emergency overlay */}
-          {emergency&&(
-            <div style={{position:"absolute",inset:0,zIndex:100}}>
-              <EmergencyModal onClose={()=>setEmergency(false)} addLog={addLog}/>
-            </div>
+              {/* Bottom nav */}
+              <div style={{display:"flex",borderTop:"1px solid rgba(255,255,255,0.05)",background:"rgba(5,5,15,0.97)",backdropFilter:"blur(24px)",flexShrink:0,paddingBottom:"max(8px,env(safe-area-inset-bottom))"}}>
+                {TABS.map(t=>(
+                  <Ripple key={t.id} onClick={()=>{engine.stopAll();setTab(t.id);}} style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:3,padding:"9px 4px 6px"}}>
+                    <div style={{fontSize:19,filter:tab===t.id?"none":"grayscale(1) opacity(.3)",transition:"all .2s"}}>{t.icon}</div>
+                    <div style={{fontSize:10,color:tab===t.id?"#e8a030":"#444",fontWeight:tab===t.id?800:500,transition:"all .2s",letterSpacing:.3}}>{t.label}</div>
+                    {tab===t.id&&<div style={{width:18,height:2,background:"#e8a030",borderRadius:2}}/>}
+                  </Ripple>
+                ))}
+              </div>
+
+              {/* Emergency overlay */}
+              {emergency&&(
+                <div style={{position:"absolute",inset:0,zIndex:100}}>
+                  <EmergencyModal onClose={()=>setEmergency(false)} addLog={addLog}/>
+                </div>
+              )}
+            </>
           )}
-        </>
-      )}
+        </div>
+      </div>
     </div>
   );
 }
